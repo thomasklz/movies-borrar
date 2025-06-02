@@ -1,20 +1,28 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Pipo'sMovies
     </ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar #movies  (keyup.enter)="searchMovies(movies)" placeholder="Buscar pelicula..."></ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+@for (item of searchResults; track $index) {
+  <ion-card  [routerLink]="['/detail', item.id]">
+    <img alt="{{item.title}}" [src]="item.poster_path? 'https://image.tmdb.org/t/p/w500' + item.poster_path : 'assets/img/default-poster.avif'" />
+    <ion-card-header >
+      <ion-card-title>{{item.title}}</ion-card-title>
+      <ion-card-subtitle>{{ item.release_date }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ item.overview }}
+    </ion-card-content>
+  </ion-card>
+}
 </ion-content>
+
+

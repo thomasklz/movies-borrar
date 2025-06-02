@@ -1,0 +1,219 @@
+.login-content {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 30px;
+    
+    .login-logo {
+      margin-bottom: 20px;
+      
+      ion-icon {
+        font-size: 4rem;
+        color: var(--ion-color-light);
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+      }
+    }
+    
+    .login-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    
+    .login-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin: 0;
+    }
+  }
+  
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    --background: rgba(255, 255, 255, 0.95);
+    
+    ion-card-content {
+      padding: 30px 25px;
+    }
+  }
+  
+  .input-item {
+    margin-bottom: 20px;
+    --border-radius: 16px;
+    --background: #f8f9fa;
+    --border-color: #e9ecef;
+    --border-width: 2px;
+    
+    &.item-has-focus {
+      --border-color: var(--ion-color-primary);
+      --background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+    }
+    
+    .input-icon {
+      color: var(--ion-color-medium);
+      margin-right: 12px;
+    }
+  }
+  
+  .custom-input {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    
+    input {
+      font-size: 16px !important;
+    }
+  }
+  
+  .password-toggle {
+    --color: var(--ion-color-medium);
+    --padding: 8px;
+    margin: 0;
+  }
+  
+  .login-button {
+    margin: 25px 0 20px 0;
+    height: 56px;
+    --border-radius: 16px;
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    font-weight: 600;
+    font-size: 16px;
+    
+    &:hover {
+      --box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: var(--ion-color-medium);
+    
+    &:before,
+    &:after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--ion-color-light);
+    }
+    
+    span {
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+  
+  .google-button {
+    margin-bottom: 20px;
+    height: 56px;
+    --border-radius: 16px;
+    --border-color: #dadce0;
+    --border-width: 2px;
+    --color: #5f6368;
+    font-weight: 500;
+    
+    &:hover {
+      --border-color: #dadce0;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .google-icon {
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  
+  .forgot-password {
+    text-align: center;
+    margin-top: 10px;
+    
+    ion-button {
+      --color: var(--ion-color-primary);
+      font-size: 14px;
+    }
+  }
+  
+  .signup-link {
+    margin-top: 30px;
+    text-align: center;
+    
+    p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    ion-button {
+      --color: var(--ion-color-light);
+      text-decoration: underline;
+      margin-left: 4px;
+    }
+  }
+  
+  // Responsive Design
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 15px;
+    }
+    
+    .login-card {
+      ion-card-content {
+        padding: 25px 20px;
+      }
+    }
+    
+    .login-header {
+      .login-title {
+        font-size: 1.8rem;
+      }
+      
+      .login-subtitle {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  // Dark Mode Support
+  @media (prefers-color-scheme: dark) {
+    .login-card {
+      --background: rgba(30, 30, 30, 0.95);
+    }
+    
+    .input-item {
+      --background: rgba(255, 255, 255, 0.05);
+      --border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .divider {
+      &:before,
+      &:after {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+
+  
