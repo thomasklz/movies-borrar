@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonIcon, IonText, IonCard, IonCardContent, IonItem, IonButton, IonInput } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { AuthService } from '../servicios/auth.service';
 import { 
   AlertController, 
   LoadingController, 
   ToastController 
 } from '@ionic/angular';
+import { IUserLogin } from '../interface/IUsers';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonInput, IonButton, IonItem, IonCardContent, IonCard, IonText, IonIcon, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonInput, IonButton, IonItem, IonCardContent, IonCard, IonText, IonIcon, IonContent,  CommonModule, FormsModule]
 })
 export class LoginPage implements OnInit {
 
@@ -21,13 +23,17 @@ export class LoginPage implements OnInit {
   
   email: string = '';
   password: string = '';
-  showPassword: boolean = false;
+ 
 
+  showPassword: boolean = false;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private loadingController = inject(LoadingController);
+  private alertController = inject(AlertController);
+  private toastController = inject(ToastController);
+  loading:any;
+  // Inyectar servicios de Ionic
   constructor(
-    private router: Router,
-    private alertController: AlertController,
-    private loadingController: LoadingController,
-    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -41,47 +47,93 @@ export class LoginPage implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  /**
-   * Handle email/password login
-   */
-  async login() {
-    // Validación básica
-    if (!this.email || !this.password) {
-      await this.showAlert('Error', 'Por favor completa todos los campos');
-      return;
-    }
-
-    if (!this.isValidEmail(this.email)) {
-      await this.showAlert('Error', 'Por favor ingresa un email válido');
-      return;
-    }
-
-    // Mostrar loading
-    const loading = await this.loadingController.create({
+  async showLoading() {
+     this.loading = await this.loadingController.create({
       message: 'Iniciando sesión...',
-      spinner: 'crescent'
-    });
-    await loading.present();
+      spinner: 'crescent',
 
-    try {
-      // Aquí iría tu lógica de autenticación
-      // Por ejemplo: await this.authService.login(this.email, this.password);
+    });
+    this.loading.present();
+  }
+  async presentAlert(message: string ) {
+    const alert = await this.alertController.create({
+      header: 'Mensaje',
+      message: message,
+      buttons: ['OK'],
+    });
+    await alert.present();
+  }
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Bienvenid@s, a Movies App',
+      duration: 1500,
+      position: 'bottom',
+    });
+
+    await toast.present();
+  }
+  async login() {
+    this.showLoading();
+    this.authService.login(this.email,this.password).subscribe({
+      next: (response:IUserLogin) => {
+        console.log('Login exitoso:', response);
+        // Navegar a la página principal
+        this.router.navigate(['/tabs/home']);
+        this.loading.dismiss();
+        this.presentToast();
+      },
+      error: (error) => {
+        this.loading.dismiss();
+        this.presentAlert(error.error.message);
+        console.error('Error en el login:', error);
+      }
+    });
+
+
+
+
+
+
+
+
+    
+    // Validación básica
+    // if (!this.email || !this.password) {
+    //   await this.showAlert('Error', 'Por favor completa todos los campos');
+    //   return;
+    // }
+
+    // if (!this.isValidEmail(this.email)) {
+    //   await this.showAlert('Error', 'Por favor ingresa un email válido');
+    //   return;
+    // }
+
+    // // Mostrar loading
+    // const loading = await this.loadingController.create({
+    //   message: 'Iniciando sesión...',
+    //   spinner: 'crescent'
+    // });
+    // await loading.present();
+
+    // try {
+    //   // Aquí iría tu lógica de autenticación
+    //   // Por ejemplo: await this.authService.login(this.email, this.password);
       
-      // Simular una llamada a API
-      await this.simulateAPICall();
+    //   // Simular una llamada a API
+    //   await this.simulateAPICall();
       
-      await loading.dismiss();
+    //   await loading.dismiss();
       
-      // Mostrar toast de éxito
-      await this.showToast('¡Bienvenido!', 'success');
+    //   // Mostrar toast de éxito
+    //   await this.showToast('¡Bienvenido!', 'success');
       
-      // Navegar a la página principal
-      this.router.navigate(['/tabs/home']);
+    //   // Navegar a la página principal
+    //   this.router.navigate(['/tabs/home']);
       
-    } catch (error) {
-      await loading.dismiss();
-      await this.showAlert('Error', 'Credenciales incorrectas. Inténtalo de nuevo.');
-    }
+    // } catch (error) {
+    //   await loading.dismiss();
+    //   await this.showAlert('Error', 'Credenciales incorrectas. Inténtalo de nuevo.');
+    // }
   }
 
   /**
